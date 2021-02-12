@@ -1,0 +1,29 @@
+{
+  "name": "discord-music-bot",
+  "version": "0.0.1",
+  "description": "A discord bot that plays music in a voice channel",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/James-Roe/Discord-Music-Bot.git"
+  },
+  "keywords": [
+    "Discord",
+    "YouTube",
+    "music",
+    "bot"
+  ],
+  "author": "James Roe",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/James-Roe/Discord-Music-Bot/issues"
+  },
+  "homepage": "https://github.com/James-Roe/Discord-Music-Bot#readme",
+  "dependencies": {
+    "discord.js": "^12.5.1",
+    "ytdl-core": "^4.4.5"
+  }
+}
