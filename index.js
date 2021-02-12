@@ -3,6 +3,11 @@ const Discord = require('discord.js');
 const {token, prefix} = require('./config.json');
 const ytdl = require('ytdl-core');
 
+let queue = [];
+
+exports.queue = queue;
+
+
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 
