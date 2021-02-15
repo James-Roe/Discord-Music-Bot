@@ -7,10 +7,6 @@ const client = new Discord.Client();
 client.commands = new Discord.Collection();
 client.guildList = new Discord.Collection();
 
-function Guild() {
-    this.queue = [];
-}
-
 exports.guildList = client.guildList;
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
