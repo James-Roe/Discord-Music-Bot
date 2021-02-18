@@ -40,30 +40,31 @@ module.exports = {
                 q: args.join(' ')
             });
 
-            console.log(songInfo.data.snippet);
+            const item = songInfo.data.items[0];
 
-            const song = 'https://www.youtube.com/watch?v=E5yFcdPAGv0&list=RDE5yFcdPAGv0&start_radio=1';
+            const song = `https://www.youtube.com/watch?v=${item.id.videoId}`;
             let guild = guildList.get(msg.guild.id);
-            guild.queue.push(song);
+            guild.queue.enqueue(song);
             console.log(guild.queue);
-            if (guild.queue.length < 2)
+            if (guild.queue.count() < 2)
             {
                 const connection = await msg.member.voice.channel.join();
 
-                const dispatcher = connection.play(await ytdl(guild.queue[0]), {type: 'opus'});
+                const dispatcher = connection.play(await ytdl(guild.queue.dequeue()), {type: 'opus'});
+
+                msg.channel.send(`playing: ${item.snippet.title}`);
 
                 connection.on('disconnect', () => {
-                    guild.queue.splice(0, guild.queue.length);
+                    guild.queue.clear();
                 })
 
                 dispatcher.on('finish', async () => {
                     console.log('finished song');
-                    guild.queue.shift();
-                    if (guild.queue.length > 0)
+                    if (!guild.queue.isEmpty())
                     {
                         console.log('another song in queue');
                         console.log(guild.queue);
-                        connection.play(await ytdl(guild.queue[0]), {type: 'opus'});
+                        connection.play(await ytdl(guild.queue.dequeue()), {type: 'opus'});
                     } else 
                     {
                         connection.disconnect();
@@ -71,7 +72,7 @@ module.exports = {
                 }); 
             } else
             {
-                msg.channel.send(song + ' added to queue.');
+                msg.channel.send(`${item.snippet.title} added to queue.`);
             }
         }
     }
