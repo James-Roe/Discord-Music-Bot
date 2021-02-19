@@ -24,5 +24,8 @@ function GuildMusicInfo(voiceChannelId)
     this.isNotPlaying = function()
     { playerState = false; }
 
+    this.getPlaying = function()
+    { return playerState; }
+
     this.queue = new Queue();
 }

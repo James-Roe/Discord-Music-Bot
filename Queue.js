@@ -18,9 +18,14 @@ function Queue()
 
     this.isEmpty = function()
     {
-        if (collection.count > 0)
+        if (collection.length > 0)
+        {
             return false;
+        }
         else
+        {
             return true;
+        }
+            
     }
 }

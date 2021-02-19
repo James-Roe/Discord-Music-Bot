@@ -1,3 +1,5 @@
+const usefulMethods = require('../methods');
+
 module.exports = {
     name: 'pause',
     description: 'pauses the current song',
@@ -5,17 +7,7 @@ module.exports = {
     {
         
         //check if bot is in members voice channel.
-        const memberChannel = msg.member.voice.channelID;
-        const botConnections = msg.client.voice.connections.array();
-
-        const botConnection = ((memberChannel, botConnections) => {
-            for (let i in botConnections)
-            {
-                if (botConnections[i].channel.id == memberChannel)
-                    return botConnections[i];
-            }
-            return null;
-        }) (memberChannel, botConnections);
+        const botConnection = usefulMethods.botConnection(msg);
 
         if (botConnection == null)
         {
