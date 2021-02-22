@@ -1,3 +1,5 @@
+const ytdl = require('ytdl-core-discord');
+
 module.exports = {
 
     //takes a message from a member as an argument and returns the bot's voice connection in that member's guild if they are in the same channel or null otherwise.
@@ -14,23 +16,22 @@ module.exports = {
         return null;
     },
 
-    nextSong(guild, dispatcher)
+    async nextSong(guild, connection)
     {
-        const botConnection = dispatcher.player.voiceConnection;
+        const dispatcher = connection.play(await ytdl(guild.queue.dequeue()), {type: 'opus'});
 
-        dispatcher.on('finish', async () => {
+        dispatcher.on('finish', () => {
             console.log('finished song');
             if (!guild.queue.isEmpty())
             {
                 console.log('another song in queue');
                 console.log(guild.queue);
-                const newDispatcher = botConnection.play(await ytdl(guild.queue.dequeue()), {type: 'opus'});
-                nextSong(guild, newDispatcher);
+                module.exports.nextSong(guild, connection);
             } else 
             {
                 console.log('no more songs in queue');
                 guild.isNotPlaying();
-                botConnection.disconnect();
+                connection.disconnect();
             }
         }); 
     }

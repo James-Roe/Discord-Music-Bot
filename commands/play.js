@@ -57,8 +57,6 @@ module.exports = {
             {
                 const connection = await msg.member.voice.channel.join();
 
-                const dispatcher = connection.play(await ytdl(guild.queue.dequeue()), {type: 'opus'});
-
                 guild.isPlaying();
 
                 msg.channel.send(`playing: ${item.snippet.title}`);
@@ -66,22 +64,10 @@ module.exports = {
                 connection.on('disconnect', () => {
                     guild.isNotPlaying();
                     guild.queue.clear();
-                })
+                });
 
-                dispatcher.on('finish', async () => {
-                    console.log('finished song');
-                    if (!guild.queue.isEmpty())
-                    {
-                        console.log('another song in queue');
-                        console.log(guild.queue);
-                        connection.play(await ytdl(guild.queue.dequeue()), {type: 'opus'});
-                    } else 
-                    {
-                        console.log('no more songs in queue');
-                        guild.isNotPlaying();
-                        connection.disconnect();
-                    }
-                }); 
+                nextSong(guild, connection);
+                
             } else
             {
                 msg.channel.send(`${item.snippet.title} added to queue.`);
