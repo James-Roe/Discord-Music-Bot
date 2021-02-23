@@ -1,4 +1,4 @@
-const usefulMethods = require('../methods');
+const { botConnection } = require('../methods');
 
 module.exports = {
     name: 'pause',
@@ -7,15 +7,15 @@ module.exports = {
     {
         
         //check if bot is in members voice channel.
-        const botConnection = usefulMethods.botConnection(msg);
+        const connection = botConnection(msg);
 
-        if (botConnection == null)
+        if (connection == null)
         {
             msg.channel.send('I need to be in your voice channel if you want to pause me.');
             return;
         }
         //check if stream is paused, and then if it isn't pause it.
-        const { dispatcher } = botConnection;
+        const { dispatcher } = connection;
 
         if (dispatcher.paused)
         {

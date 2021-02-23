@@ -1,5 +1,5 @@
-const usefulMethods = require('../methods');
-const { guildList } = require('../index');
+const { botConnection } = require('../methods');
+
 const ytdl = require('ytdl-core-discord');
 
 module.exports = {
@@ -8,16 +8,16 @@ module.exports = {
     execute(msg, args)
     {
         //check that bot is in members voice channel
-        const botConnection = usefulMethods.botConnection(msg);
+        const connection = botConnection(msg);
 
-        if (botConnection == null)
+        if (connection == null)
         {
             msg.channel.send('I need to be in your voice channel if you want to skip a song.');
             return;
         }
 
         //skip the currently playing song and play the next song in the queue, or diconnect if the queue is empty.
-        const dispatcher = botConnection.dispatcher;
+        const dispatcher = connection.dispatcher;
 
         dispatcher.end();
     }

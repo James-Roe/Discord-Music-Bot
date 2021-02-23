@@ -1,9 +1,8 @@
 const {guildList} = require('../index');
 const GuildMusicInfo = require('../GuildMusicInfo');
-const ytdl = require('ytdl-core-discord');
-const {google} = require('googleapis');
-const {youtube_API_Key} = require('../config.json');
-const { nextSong } = require('../methods');
+const { google } = require('googleapis');
+const { youtube_API_Key } = require('../config.json');
+const { nextSong, botConnection } = require('../methods');
 
 module.exports = {
     name: 'play',
@@ -25,8 +24,24 @@ module.exports = {
                 msg.channel.send('Please specify a song that you would like to play.')
             } else 
             {
-                console.log('not yet implemented');
                 //check if song is playing
+                const guild = guildList.get(msg.guild.id);
+
+                //if song is playing then check whether it's paused or not
+                if (guild.getPlaying())
+                {
+                    const connection = botConnection(msg);
+                    const {dispatcher} = connection;
+                    if (dispatcher.paused)
+                        dispatcher.resume();
+                    return;
+                }
+
+                //if song is not playing then play last played song
+                else
+                {
+
+                }
             }
         } 
         
@@ -47,19 +62,15 @@ module.exports = {
                 q: args.join(' ')
             });
 
-            const item = songInfo.data.items[0];
+            const songData = songInfo.data.items[0];
 
-            const song = `https://www.youtube.com/watch?v=${item.id.videoId}`;
-            let guild = guildList.get(msg.guild.id);
-            guild.queue.enqueue(song);
-            console.log(guild.queue);
+            const guild = guildList.get(msg.guild.id);
+            guild.queue.enqueue(songData);
             if (!guild.getPlaying())
             {
                 const connection = await msg.member.voice.channel.join();
 
                 guild.isPlaying();
-
-                msg.channel.send(`playing: ${item.snippet.title}`);
 
                 connection.on('disconnect', () => {
                     guild.isNotPlaying();
@@ -68,10 +79,8 @@ module.exports = {
 
                 nextSong(guild, connection);
                 
-            } else
-            {
-                msg.channel.send(`${item.snippet.title} added to queue.`);
-            }
+            } 
+                msg.channel.send(`${songData.snippet.title} added to queue.`);
         }
     }
 }
