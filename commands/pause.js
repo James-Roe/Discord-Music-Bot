@@ -3,6 +3,7 @@ const { botConnection } = require('../methods');
 module.exports = {
     name: 'pause',
     description: 'pauses the current song',
+    instructions: 'to be implemented',
     execute(msg, args) 
     {
         

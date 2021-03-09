@@ -19,7 +19,7 @@ module.exports = {
     async nextSong(guild, connection)
     {
         const songData = guild.queue.dequeue();
-        const songId = songData.id.videoID;
+        const songId = songData.id.videoId;
         const songUrl = `https://www.youtube.com/watch?v=${songId}`;
 
         const dispatcher = connection.play(await ytdl(songUrl), {type: 'opus'});

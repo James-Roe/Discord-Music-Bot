@@ -1,4 +1,3 @@
-const {guildList} = require('../index');
 const GuildMusicInfo = require('../GuildMusicInfo');
 const { google } = require('googleapis');
 const { youtube_API_Key } = require('../config.json');
@@ -7,8 +6,12 @@ const { nextSong, botConnection } = require('../methods');
 module.exports = {
     name: 'play',
     description: 'plays the currently queued song, if you wish to add a song to the queue type ?play [song]',
+    instructions: 'to be implemented',
     async execute(msg, args) 
     {
+
+        const { guildList } = msg.client;
+
         //check that the member is in a voice channel.
         if(msg.member.voice.channel == undefined)
         {
@@ -53,7 +56,7 @@ module.exports = {
                 guildList.set(msg.guild.id, new GuildMusicInfo());
             }
 
-            //search for video id based upon arguments using youtube API
+            //search for video id based upon arguments using youtube data API
             const songInfo = await google.youtube('v3').search.list({
                 part: 'snippet',
                 key: youtube_API_Key,

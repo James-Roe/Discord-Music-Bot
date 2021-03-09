@@ -5,6 +5,7 @@ const ytdl = require('ytdl-core-discord');
 module.exports = {
     name: 'skip',
     description: 'skips the currently playing song',
+    instructions: 'to be implemented',
     execute(msg, args)
     {
         //check that bot is in members voice channel
